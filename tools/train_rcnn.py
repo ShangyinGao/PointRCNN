@@ -193,6 +193,12 @@ if __name__ == "__main__":
     # create dataloader & network & optimizer
     train_loader, test_loader = create_dataloader(logger)
     model = PointRCNN(num_classes=train_loader.dataset.num_class, use_xyz=True, mode='TRAIN')
+
+    # save model structure
+    model_file = os.path.join(root_result_dir, 'model.txt')
+    model_logger = create_logger(model_file)
+    model_logger.info(model)
+
     optimizer = create_optimizer(model)
 
     if args.mgpus:
