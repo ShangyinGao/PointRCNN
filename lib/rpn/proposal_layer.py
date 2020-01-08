@@ -28,8 +28,11 @@ class ProposalLayer(nn.Module):
                                        get_xz_fine=cfg.RPN.LOC_XZ_FINE,
                                        get_y_by_bin=False,
                                        get_ry_fine=False)  # (N, 7)
+        # debug: proposals.shape = [65536, 7]
+
         proposals[:, 1] += proposals[:, 3] / 2  # set y as the center of bottom
         proposals = proposals.view(batch_size, -1, 7)
+        # debug: proposals.shape = [B, 16384, 7]
 
         scores = rpn_scores
         _, sorted_idxs = torch.sort(scores, dim=1, descending=True)

@@ -46,6 +46,8 @@ class PointRCNN(nn.Module):
 
                     # proposal layer
                     rois, roi_scores_raw = self.rpn.proposal_layer(rpn_scores_raw, rpn_reg, backbone_xyz)  # (B, M, 7)
+                    # debug: rois.shape = [B, 512, 7]
+                    # debug: roi_scores_raw.shape = [B, 512]
 
                     output['rois'] = rois
                     output['roi_scores_raw'] = roi_scores_raw
