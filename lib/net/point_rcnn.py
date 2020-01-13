@@ -4,6 +4,8 @@ from lib.net.rpn import RPN
 from lib.net.rcnn_net import RCNNNet
 from lib.config import cfg
 
+import datetime
+
 
 class PointRCNN(nn.Module):
     def __init__(self, num_classes, use_xyz=True, mode='TRAIN'):
@@ -24,6 +26,7 @@ class PointRCNN(nn.Module):
                 raise NotImplementedError
 
     def forward(self, input_data):
+        pointrcnn_start = datetime.now()
         if cfg.RPN.ENABLED:
             output = {}
             # rpn inference
@@ -69,4 +72,5 @@ class PointRCNN(nn.Module):
         else:
             raise NotImplementedError
 
+        print(f'PointRCNN forward time: {datetime.now() - pointrcnn_start}')
         return output

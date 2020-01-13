@@ -11,6 +11,8 @@ import lib.utils.kitti_utils as kitti_utils
 import lib.utils.roipool3d.roipool3d_utils as roipool3d_utils
 
 
+import datetime
+
 class RCNNNet(nn.Module):
     def __init__(self, num_classes, input_channels=0, use_xyz=True):
         super().__init__()
@@ -117,6 +119,7 @@ class RCNNNet(nn.Module):
         :param input_data: input dict
         :return:
         """
+        rcnn_start = datetime.now()
         if cfg.RCNN.ROI_SAMPLE_JIT:
             if self.training:
                 with torch.no_grad():
@@ -187,4 +190,6 @@ class RCNNNet(nn.Module):
 
         if self.training:
             ret_dict.update(target_dict)
+
+        print(f'rcnn forward time: {datetime.now() - rcnn_start}')
         return ret_dict

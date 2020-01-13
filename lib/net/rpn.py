@@ -7,6 +7,8 @@ import lib.utils.loss_utils as loss_utils
 from lib.config import cfg
 import importlib
 
+import datetime
+
 
 class RPN(nn.Module):
     def __init__(self, use_xyz=True, mode='TRAIN'):
@@ -70,6 +72,7 @@ class RPN(nn.Module):
         :param input_data: dict (point_cloud)
         :return:
         """
+        rpn_start = datetime.now()
         pts_input = input_data['pts_input']
         # debug: pts_input.shape = [B, 16384, 3]
         backbone_xyz, backbone_features = self.backbone_net(pts_input)  # (B, N, 3), (B, C, N)
@@ -83,5 +86,6 @@ class RPN(nn.Module):
         ret_dict = {'rpn_cls': rpn_cls, 'rpn_reg': rpn_reg,
                     'backbone_xyz': backbone_xyz, 'backbone_features': backbone_features}
 
+        print(f"rpn forward time: {datetime.now() - rpn_start}")
         return ret_dict
 

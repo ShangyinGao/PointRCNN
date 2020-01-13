@@ -5,6 +5,8 @@ import lib.utils.loss_utils as loss_utils
 from lib.config import cfg
 from collections import namedtuple
 
+import datetime
+
 
 def model_joint_fn_decorator():
     ModelReturn = namedtuple("ModelReturn", ['loss', 'tb_dict', 'disp_dict'])
@@ -32,7 +34,9 @@ def model_joint_fn_decorator():
                 pts_input = torch.cat((input_data['pts_input'], input_data['pts_features']), dim=-1)
                 input_data['pts_input'] = pts_input
 
+        model_fn_start = datetime.now()
         ret_dict = model(input_data)
+        print(f'model_fn forward time: {datetime.now() - model_fn_start}')
         # debug (rpn mode), keys = [rpn_cls, rpn_reg, backbone_xyz, backbone_features]
         # debug (rcnn mode), keys = [rpn_cls, rpn_reg, backbone_xyz, backbone_features,
         #                            rois, rois_scores_raw, seg_results, 
