@@ -7,7 +7,7 @@ import lib.utils.loss_utils as loss_utils
 from lib.config import cfg
 import importlib
 
-import datetime
+from datetime import datetime
 
 
 class RPN(nn.Module):

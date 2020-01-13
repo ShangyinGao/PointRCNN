@@ -5,7 +5,7 @@ import lib.utils.loss_utils as loss_utils
 from lib.config import cfg
 from collections import namedtuple
 
-import datetime
+from datetime import datetime
 
 
 def model_joint_fn_decorator():

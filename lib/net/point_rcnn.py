@@ -4,7 +4,7 @@ from lib.net.rpn import RPN
 from lib.net.rcnn_net import RCNNNet
 from lib.config import cfg
 
-import datetime
+from datetime import datetime
 
 
 class PointRCNN(nn.Module):
