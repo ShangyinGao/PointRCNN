@@ -33,6 +33,11 @@ def model_joint_fn_decorator():
                 input_data['pts_input'] = pts_input
 
         ret_dict = model(input_data)
+        # debug (rpn mode), keys = [rpn_cls, rpn_reg, backbone_xyz, backbone_features]
+        # debug (rcnn mode), keys = [rpn_cls, rpn_reg, backbone_xyz, backbone_features,
+        #                            rois, rois_scores_raw, seg_results, 
+        #                            rcnn_cls, rcnn_reg, sample_pts, pts_features,
+        #                            cls_labes, reg_valid_mask, gt_of_rois, gt_iou, roi_bxoes3d, pts_input]
 
         tb_dict = {}
         disp_dict = {}

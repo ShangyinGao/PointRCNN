@@ -55,6 +55,8 @@ class Pointnet2MSG(nn.Module):
 
     def forward(self, pointcloud: torch.cuda.FloatTensor):
         xyz, features = self._break_up_pc(pointcloud)
+        # debug: pointcloud.shape = [B, 16384, 3]
+        # debug: features.shape == None, xyz == pointcloud
 
         l_xyz, l_features = [xyz], [features]
         for i in range(len(self.SA_modules)):
@@ -62,9 +64,16 @@ class Pointnet2MSG(nn.Module):
             l_xyz.append(li_xyz)
             l_features.append(li_features)
 
+        # debug: l_features[1-4].shape = [B, 96, 4096], [B, 256, 1024], [B, 512, 256], [B, 1024, 64]
+        # debug: l_xyz[0-4].shape = [B, 16384-4096-1024-256-64, 3]
+        
+
         for i in range(-1, -(len(self.FP_modules) + 1), -1):
             l_features[i - 1] = self.FP_modules[i](
                 l_xyz[i - 1], l_xyz[i], l_features[i - 1], l_features[i]
             )
+
+        # debug: l_xyz.shape same as before
+        # debug: l_features[0-4].shape = [B, 128, 16384], [B, 256, 4096], [B, 512, 1024], [B, 512, 256], [B, 1024, 64]
 
         return l_xyz[0], l_features[0]

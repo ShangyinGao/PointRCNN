@@ -71,10 +71,14 @@ class RPN(nn.Module):
         :return:
         """
         pts_input = input_data['pts_input']
+        # debug: pts_input.shape = [B, 16384, 3]
         backbone_xyz, backbone_features = self.backbone_net(pts_input)  # (B, N, 3), (B, C, N)
+        # debug: backbone_xyz.shape = [B, 16384, 3], backbone_features.shape = [B, 128, 16384]
 
         rpn_cls = self.rpn_cls_layer(backbone_features).transpose(1, 2).contiguous()  # (B, N, 1)
         rpn_reg = self.rpn_reg_layer(backbone_features).transpose(1, 2).contiguous()  # (B, N, C)
+        # debug: rpn_cls.shape = [B, 16384, 1]
+        # debug: rpn_reg.shape = [B, 16384, 76]
 
         ret_dict = {'rpn_cls': rpn_cls, 'rpn_reg': rpn_reg,
                     'backbone_xyz': backbone_xyz, 'backbone_features': backbone_features}
